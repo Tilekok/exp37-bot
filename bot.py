@@ -4,9 +4,12 @@ from flask import Flask, request
 from collections import Counter
 from telegram import Bot, Update
 
-TOKEN = os.getenv("8791083151:AAG7m-9zxN7AZuNFQXz0gjf5KGIOIijh9v4")  # Токен лучше хранить в переменных окружения
-bot = Bot(token=TOKEN)
+# Токен читаем из переменной окружения TELEGRAM_BOT_TOKEN
+TOKEN = os.getenv("8791083151:AAG7m-9zxN7AZuNFQXz0gjf5KGIOIijh9v4")
+if not TOKEN:
+    raise ValueError("Переменная окружения TELEGRAM_BOT_TOKEN не установлена!")
 
+bot = Bot(token=TOKEN)
 app = Flask(__name__)
 
 DATA_FILE = "data.json"
@@ -15,7 +18,7 @@ def load_data():
     try:
         with open(DATA_FILE, "r") as f:
             return json.load(f)
-    except:
+    except FileNotFoundError:
         return []
 
 def save_data(data):
@@ -28,7 +31,7 @@ def webhook():
 
     if update.message:
         text = update.message.text
-        chat_id = update.message.chat_id
+        chat_id = update.message.chat.id  # исправлено
 
         if text == "/start":
             bot.send_message(chat_id, "🚀 Бот работает (Webhook). Отправляй числа от 1 до 37.")
@@ -59,10 +62,12 @@ def webhook():
                 bot.send_message(chat_id, f"✅ Число {num} сохранено.")
             else:
                 bot.send_message(chat_id, "❌ Вводи только числа от 1 до 37.")
-        except:
+        except ValueError:
             bot.send_message(chat_id, "❌ Не понимаю команду. Отправь число или /predict")
 
     return "ok"
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    # Render использует переменную PORT для веб-приложений
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
