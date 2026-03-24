@@ -4,7 +4,7 @@ from flask import Flask, request
 from collections import Counter
 from telegram import Bot, Update
 
-TOKEN = os.getenv("6356929835:AAGVIHodQ_17B0a2iCd_Uk5nNhF9M3C81Pc")  # Токен лучше хранить в переменных окружения
+TOKEN = os.getenv("8791083151:AAG7m-9zxN7AZuNFQXz0gjf5KGIOIijh9v4")  # Токен лучше хранить в переменных окружения
 bot = Bot(token=TOKEN)
 
 app = Flask(__name__)
