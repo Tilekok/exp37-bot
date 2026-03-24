@@ -11,7 +11,7 @@ from collections import defaultdict, Counter
 # =====================
 # 1️⃣ Получение токена из переменной окружения
 # =====================
-API_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+API_TOKEN = os.environ.get("8791083151:AAG7m-9zxN7AZuNFQXz0gjf5KGIOIijh9v4")
 if not API_TOKEN:
     raise ValueError("Переменная окружения TELEGRAM_BOT_TOKEN не установлена!")
 
